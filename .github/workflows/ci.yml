@@ -11,11 +11,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Debug file structure
+        run: ls -R
+
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get install -y libxml2-utils
 
       - name: Lint XML Structure
-        run: xmllint --noout project.xml
+        # Замени 'project.xml' на корректный путь, который покажет шаг Debug
+        run: xmllint --noout $(find . -name "*.xml" | head -n 1)
 
       - name: Package project
         run: |
