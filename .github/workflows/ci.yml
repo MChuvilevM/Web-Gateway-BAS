@@ -8,16 +8,20 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+
       - name: Lint XML Structure
+        run: xmllint --noout project.xml
+
+      - name: Package project
         run: |
-          # Проверка целостности XML-проекта BAS
-          xmllint --noout project.xml
-      - name: Archive Project
-        run: |
-          # Создание готового к деплою архива проекта
           zip -r Web-Gateway-BAS.zip . -x "*.git*"
-      - name: Upload Artifact
+          
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: build-package
